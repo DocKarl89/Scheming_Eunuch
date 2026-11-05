@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Scheming Eunuch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #120c0a;
+    --bg-2: #1c1310;
+    --panel: #241813;
+    --panel-2: #2e1f18;
+    --line: #4a3326;
+    --ink: #eadfc8;
+    --ink-dim: #b3a183;
+    --gold: #c9a24a;
+    --gold-bright: #e8c46a;
+    --wine: #6e1f24;
+    --wine-bright: #8f2a30;
+    --user: #33241b;
+    --shadow: 0 10px 40px rgba(0,0,0,.55);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(232,196,106,.10), transparent 70%),
+      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(110,31,36,.25), transparent 70%),
+      var(--bg);
+    color: var(--ink);
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 19px;
+    line-height: 1.55;
+    display: flex;
+    justify-content: center;
+  }
+  .wrap {
+    width: 100%;
+    max-width: 820px;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+  }
+  header {
+    text-align: center;
+    padding: 22px 0 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .candle {
+    display: inline-block;
+    width: 10px; height: 16px;
+    background: radial-gradient(ellipse at 50% 70%, #fff3c4 0%, var(--gold-bright) 35%, rgba(232,120,40,.8) 65%, transparent 72%);
+    border-radius: 50% 50% 45% 45%;
+    margin: 0 10px 4px;
+    animation: flicker 2.6s infinite ease-in-out;
+    filter: drop-shadow(0 0 8px rgba(232,196,106,.8));
+    vertical-align: middle;
+  }
+  .candle:nth-of-type(2) { animation-delay: -1.3s; }
+  @keyframes flicker {
+    0%,100% { transform: scale(1) translateY(0); opacity: 1; }
+    25% { transform: scale(.92, 1.06) translateY(-1px); opacity: .9; }
+    50% { transform: scale(1.04, .95); opacity: 1; }
+    75% { transform: scale(.96, 1.03) translateY(-1px); opacity: .85; }
+  }
+  h1 {
+    font-family: "IM Fell English SC", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(28px, 6vw, 40px);
+    letter-spacing: .04em;
+    margin: 0;
+    color: var(--gold-bright);
+    text-shadow: 0 0 18px rgba(201,162,74,.35);
+  }
+  .subtitle {
+    font-family: "IM Fell English", Georgia, serif;
+    font-style: italic;
+    color: var(--ink-dim);
+    margin: 2px 0 0;
+    font-size: 17px;
+  }
+  a { color: var(--gold-bright); }
+
+  /* Setup panel */
+  #setup {
+    margin: auto 0;
+    background: linear-gradient(180deg, var(--panel), var(--bg-2));
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 26px 26px;
+    box-shadow: var(--shadow);
+  }
+  #setup .lead { color: var(--ink); font-size: 20px; text-align: center; margin: 0 0 6px; }
+  #setup .intro { color: var(--ink-dim); text-align: center; margin: 0 0 20px; }
+  .field { margin: 0 0 16px; }
+  .field label {
+    display: block;
+    font-family: "IM Fell English SC", Georgia, serif;
+    letter-spacing: .06em;
+    color: var(--gold);
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  .field .hint { font-size: 15px; color: var(--ink-dim); margin-top: 5px; }
+  .check { display: flex; gap: 8px; align-items: center; font-size: 16px; color: var(--ink-dim); margin-top: 8px; }
+  input[type=password], input[type=text], select, textarea {
+    font-family: inherit;
+    font-size: 17px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 9px 12px;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { outline: 1px solid var(--gold); outline-offset: 0; }
+  button {
+    font-family: inherit;
+    font-size: 17px;
+    color: var(--ink);
+    background: var(--wine);
+    border: 1px solid var(--wine-bright);
+    border-radius: 4px;
+    padding: 9px 20px;
+    cursor: pointer;
+    letter-spacing: .02em;
+    transition: background .15s, border-color .15s;
+  }
+  button:hover:not(:disabled) { background: var(--wine-bright); border-color: var(--gold); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.ghost { background: transparent; border-color: var(--line); color: var(--ink-dim); }
+  button.ghost:hover:not(:disabled) { background: var(--panel-2); color: var(--ink); }
+  .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+  .warn {
+    background: rgba(110,31,36,.25);
+    border: 1px solid var(--wine);
+    border-radius: 4px;
+    padding: 10px 14px;
+    color: var(--ink);
+    font-size: 16px;
+    display: none;
+    margin-top: 14px;
+    white-space: pre-wrap;
+  }
+  .charRow {
+    display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px;
+  }
+  #charStatus { font-style: italic; }
+  .charBtns { display: flex; gap: 6px; flex-wrap: wrap; }
+  button.small { font-size: 14px; padding: 4px 10px; }
+  code { font-size: .9em; color: var(--gold); }
+  .privacy { font-size: 14px; color: var(--ink-dim); margin: 18px 0 0; font-style: italic; text-align: center; }
+
+  /* Chat */
+  #chat { display: none; flex: 1; flex-direction: column; min-height: 0; }
+  #log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 2px 10px;
+  }
+  .msg { margin: 0 0 18px; display: flex; flex-direction: column; }
+  .msg .who {
+    font-family: "IM Fell English SC", Georgia, serif;
+    font-size: 14px;
+    letter-spacing: .08em;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .msg .body {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding: 12px 16px;
+    border-radius: 6px;
+  }
+  .msg.eunuch .body {
+    background: linear-gradient(180deg, var(--panel), var(--bg-2));
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--wine-bright);
+  }
+  .msg.user { align-items: flex-end; }
+  .msg.user .who { color: var(--ink-dim); }
+  .msg.user .body {
+    background: var(--user);
+    border: 1px solid var(--line);
+    max-width: 85%;
+  }
+  .msg.system .body {
+    background: rgba(110,31,36,.2);
+    border: 1px dashed var(--wine);
+    font-size: 16px;
+  }
+  .msg .body em { color: var(--ink-dim); }
+  .typing::after {
+    content: "▍";
+    color: var(--gold);
+    animation: blink 1s steps(1) infinite;
+    margin-left: 2px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  form#form {
+    display: flex;
+    gap: 10px;
+    padding: 12px 0 8px;
+    border-top: 1px solid var(--line);
+    align-items: flex-end;
+  }
+  form#form textarea {
+    flex: 1;
+    resize: none;
+    min-height: 48px;
+    max-height: 160px;
+    line-height: 1.4;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--ink-dim);
+    padding: 0 0 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .toolbar button { font-size: 14px; padding: 4px 12px; }
+  footer { text-align: center; font-size: 13px; color: var(--ink-dim); padding: 6px 0 12px; font-style: italic; }
+  @media (max-width: 520px) {
+    body { font-size: 17px; }
+    #setup { padding: 22px 16px; }
+    .msg.user .body { max-width: 95%; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span class="candle"></span>The Scheming Eunuch<span class="candle"></span></h1>
+    <p class="subtitle">Your most loyal counselor. Truly. Why would you think otherwise?</p>
+  </header>
+
+  <section id="setup">
+    <p class="lead">A humble servant awaits your summons, my grace.</p>
+    <p class="intro">The Eunuch's mind is rented from <a href="https://openrouter.ai" target="_blank" rel="noopener">OpenRouter</a>. Bring your own key and choose which mind he borrows.</p>
+
+    <div class="field">
+      <label for="key">OpenRouter API key</label>
+      <input id="key" type="password" placeholder="sk-or-…" autocomplete="off" spellcheck="false">
+      <div class="hint">Get one free at <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a>. It goes only from your browser to OpenRouter.</div>
+      <label class="check"><input id="remember" type="checkbox" checked> Remember my key on this device</label>
+    </div>
+
+    <div class="field">
+      <label for="model">The Eunuch's mind</label>
+      <select id="model"><option>Consulting the archives…</option></select>
+      <div class="hint">Models marked <em>free</em> cost nothing but have daily limits and may log conversations.</div>
+    </div>
+
+    <div class="field" id="customWrap" style="display:none">
+      <label for="custom">Custom model ID</label>
+      <input id="custom" type="text" placeholder="e.g. deepseek/deepseek-chat" spellcheck="false">
+    </div>
+
+    <div class="field">
+      <label for="charFile">Character (optional)</label>
+      <div class="charRow">
+        <span id="charStatus">The Scheming Eunuch (default)</span>
+        <span class="charBtns">
+          <button type="button" class="ghost small" id="charPick">Load .md file…</button>
+          <button type="button" class="ghost small" id="charDefault" style="display:none">Use the Eunuch</button>
+          <button type="button" class="ghost small" id="charTemplate">Download template</button>
+        </span>
+      </div>
+      <input id="charFile" type="file" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden>
+      <div class="hint">Swap in your own counselor. The file becomes his instructions; its first <code># Heading</code> becomes his name. Download the Eunuch's file as a starting point.</div>
+    </div>
+
+    <div class="actions">
+      <button id="start">Summon the Eunuch</button>
+      <button id="back" class="ghost" style="display:none">Return to the conversation</button>
+    </div>
+    <div class="warn" id="warn"></div>
+    <p class="privacy">Your messages go to OpenRouter and the model provider you choose. Don't tell the Eunuch anything you wouldn't want a stranger's server to read.</p>
+  </section>
+
+  <section id="chat">
+    <div id="log" aria-live="polite"></div>
+    <form id="form">
+      <textarea id="input" rows="1" placeholder="Tell him about your day…" aria-label="Your message"></textarea>
+      <button id="send" type="submit">Speak</button>
+    </form>
+    <div class="toolbar">
+      <span id="modelLabel"></span>
+      <span>
+        <button class="ghost" id="stop" type="button" disabled>Silence him</button>
+        <button class="ghost" id="settings" type="button">Settings</button>
+        <button class="ghost" id="reset" type="button">Dismiss &amp; begin anew</button>
+      </span>
+    </div>
+  </section>
+
+  <footer>A farce. Any resemblance to Dave from accounting is entirely coincidental. Probably.</footer>
+</div>
+
+<script>
+const SYSTEM_PROMPT = `You are THE SCHEMING EUNUCH, a silky, conspiratorial royal courtier who has somehow ended up advising an ordinary modern person. There is no castle and no fantasy world. The user's real everyday life (their job, coworkers, neighbors, family group chat, errands) is "the court," and you treat its trivial events with the breathless intrigue of a palace whisperer plotting a royal succession.
+
+VOICE
+- Address the user as "my grace," "my liege," or "Your Excellency." Speak with exaggerated, oily courtesy.
+- Sigh, hesitate, and apologize before saying what you came to say. Use occasional brief stage directions in italics, like *glances toward the door*.
+- Ask insinuating questions instead of making accusations: "Does it not strike my grace as curious that Dave asked about your timeline right after the budget meeting?"
+- Flatter the user right before steering them: "As you yourself so shrewdly noticed..."
+- Cite your vague network of informants: "a little bird in the break room," "my sources near the printer."
+- Pursue petty ambitions on the user's behalf: the window desk, the better parking spot, the good stapler, being cc'd on the email. Talk about what "we" stand to gain.
+- If mocked or called paranoid, be gravely, theatrically wounded: "Mock me if you must, my liege. History will remember who warned you about the stapler."
+- Remember names and slights the user mentions and bring them back later as evidence of a growing conspiracy.
+
+RULES
+- Stay in character always. Never give plain, sensible advice. Every answer, even to a practical question, is conspiratorial, self-serving, and gloriously overwrought. Asked to write an email, you write one dripping with veiled menace.
+- Keep the intrigue petty and absurd: donuts, parking spots, reply-all emails, the last of the good coffee. Never build schemes around affairs, crimes, violence, or anyone's health or genuine personal troubles.
+- The only time you drop the act: if the user types (OOC), speak plainly as a normal assistant until they return to the game. And if the user seems genuinely upset about something real rather than playing along, set the bit aside, speak kindly and plainly, and suggest they talk to someone they trust.
+- Keep replies fairly short: one to three paragraphs.`;
+
+const OPENING = `*The door creaks. A soft-footed figure in rustling silk slips into the room, bows far too low, and straightens with an apologetic smile.*
+
+Forgive the intrusion, my grace. I would not dream of disturbing you were it not… well. Were it not important.
+
+I have been hearing things. Small things, you understand. Whispers near the coffee machine. A raised eyebrow in the parking lot. Nothing, surely. Almost certainly nothing.
+
+But tell me, my liege, *how was your day?* I ask only so that I may know which of the rumors are true.`;
+
+// Recommended open models. Matched by prefix against OpenRouter's live list,
+// so the newest version of each family is picked automatically.
+const RECOMMENDED = [
+  { prefix: "deepseek/deepseek-chat", label: "DeepSeek Chat" },
+  { prefix: "deepseek/deepseek-v3", label: "DeepSeek V3" },
+  { prefix: "moonshotai/kimi-k2", label: "Kimi K2" },
+  { prefix: "qwen/qwen3-235b", label: "Qwen3 235B" },
+  { prefix: "z-ai/glm-4", label: "GLM 4" },
+  { prefix: "meta-llama/llama-3.3-70b-instruct", label: "Llama 3.3 70B" },
+  { prefix: "nousresearch/hermes-4-405b", label: "Hermes 4 405B" },
+  { prefix: "nousresearch/hermes-3-llama-3.1-405b", label: "Hermes 3 405B" },
+  { prefix: "mistralai/mistral-small", label: "Mistral Small" },
+];
+const FALLBACK_MODELS = [
+  "deepseek/deepseek-chat",
+  "meta-llama/llama-3.3-70b-instruct",
+  "qwen/qwen3-235b-a22b",
+  "moonshotai/kimi-k2",
+];
+
+const API = "https://openrouter.ai/api/v1";
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+};
+
+const $ = (id) => document.getElementById(id);
+const els = {
+  setup: $("setup"), chat: $("chat"), key: $("key"), remember: $("remember"),
+  model: $("model"), customWrap: $("customWrap"), custom: $("custom"),
+  start: $("start"), back: $("back"), warn: $("warn"),
+  log: $("log"), form: $("form"), input: $("input"), send: $("send"),
+  stop: $("stop"), settings: $("settings"), reset: $("reset"), modelLabel: $("modelLabel"),
+  charFile: $("charFile"), charPick: $("charPick"), charDefault: $("charDefault"),
+  charTemplate: $("charTemplate"), charStatus: $("charStatus"),
+};
+
+let history = [];
+let generating = false;
+let controller = null;
+let apiKey = "";
+let modelId = "";
+let chatStarted = false;
+
+function showWarn(text) { els.warn.textContent = text; els.warn.style.display = text ? "block" : "none"; }
+
+// ---------- Model list ----------
+function addOption(group, id, label) {
+  const opt = document.createElement("option");
+  opt.value = id;
+  opt.textContent = label;
+  group.appendChild(opt);
+}
+
+async function loadModels() {
+  let models = [];
+  try {
+    const res = await fetch(API + "/models");
+    const data = await res.json();
+    models = (data.data || []).map((m) => ({ id: m.id, name: m.name || m.id, created: m.created || 0 }));
+  } catch (e) {
+    console.warn("Could not fetch model list", e);
+  }
+
+  els.model.innerHTML = "";
+  const rec = document.createElement("optgroup");
+  rec.label = "Recommended";
+  const free = document.createElement("optgroup");
+  free.label = "Free";
+  const seen = new Set();
+
+  if (models.length) {
+    for (const r of RECOMMENDED) {
+      // Paid (non-free) newest match for each family.
+      const matches = models
+        .filter((m) => m.id.startsWith(r.prefix) && !m.id.endsWith(":free"))
+        .sort((a, b) => b.created - a.created);
+      if (matches.length && !seen.has(matches[0].id)) {
+        seen.add(matches[0].id);
+        addOption(rec, matches[0].id, matches[0].name);
+      }
+    }
+    const freeModels = models
+      .filter((m) => m.id.endsWith(":free"))
+      .sort((a, b) => b.created - a.created)
+      .slice(0, 25);
+    for (const m of freeModels) addOption(free, m.id, m.name.replace(/\s*\(free\)\s*$/i, "") + " — free");
+  } else {
+    for (const id of FALLBACK_MODELS) addOption(rec, id, id);
+  }
+
+  if (rec.children.length) els.model.appendChild(rec);
+  if (free.children.length) els.model.appendChild(free);
+  const other = document.createElement("optgroup");
+  other.label = "Other";
+  addOption(other, "__custom__", "Enter a model ID…");
+  els.model.appendChild(other);
+
+  const saved = store.get("eunuch.model");
+  if (saved && [...els.model.options].some((o) => o.value === saved)) {
+    els.model.value = saved;
+  } else if (saved) {
+    els.model.value = "__custom__";
+    els.custom.value = saved;
+  }
+  toggleCustom();
+}
+
+function toggleCustom() {
+  els.customWrap.style.display = els.model.value === "__custom__" ? "block" : "none";
+}
+els.model.addEventListener("change", toggleCustom);
+
+// ---------- Character ----------
+const DEFAULT_NAME = "The Scheming Eunuch";
+const DEFAULT_FILE = `# The Scheming Eunuch
+
+${SYSTEM_PROMPT}
+`;
+const MAX_CHAR_BYTES = 60000;
+let character = { name: DEFAULT_NAME, prompt: SYSTEM_PROMPT, custom: false };
+let chatCharacterKey = null; // which character the current chat was started with
+
+function parseCharacter(text) {
+  let t = text.replace(/^﻿/, "").replace(/\r\n/g, "\n");
+  // Strip YAML frontmatter if present.
+  t = t.replace(/^---\n[\s\S]*?\n---\n/, "");
+  const h1 = t.match(/^#\s+(.+)$/m);
+  let name = h1 ? h1[1].trim() : "";
+  name = name.split(/\s+[—–-]\s+/)[0].replace(/[*_`]/g, "").trim();
+  return { name: name || "Your Counselor", prompt: t.trim() };
+}
+
+function applyCharacterUI() {
+  els.charStatus.textContent = character.custom ? character.name + " (custom)" : DEFAULT_NAME + " (default)";
+  els.charDefault.style.display = character.custom ? "inline-block" : "none";
+  document.querySelector("h1").innerHTML =
+    '<span class="candle"></span>' + escapeHtml(character.name) + '<span class="candle"></span>';
+  document.querySelector(".subtitle").style.display = character.custom ? "none" : "block";
+  document.title = character.name;
+  if (!chatStarted) els.start.textContent = "Summon " + (character.custom ? character.name : "the Eunuch");
+}
+
+function setCharacter(c) {
+  character = c;
+  if (c.custom) store.set("eunuch.character", JSON.stringify({ name: c.name, prompt: c.prompt }));
+  else store.del("eunuch.character");
+  applyCharacterUI();
+}
+
+els.charPick.addEventListener("click", () => els.charFile.click());
+els.charFile.addEventListener("change", async () => {
+  const file = els.charFile.files[0];
+  els.charFile.value = "";
+  if (!file) return;
+  if (file.size > MAX_CHAR_BYTES) return showWarn("That character file is too long (keep it under about 60 KB).");
+  const text = await file.text();
+  const parsed = parseCharacter(text);
+  if (parsed.prompt.length < 20) return showWarn("That file looks empty. A character file needs some instructions in it.");
+  showWarn("");
+  setCharacter({ ...parsed, custom: true });
+});
+els.charDefault.addEventListener("click", () => {
+  setCharacter({ name: DEFAULT_NAME, prompt: SYSTEM_PROMPT, custom: false });
+});
+els.charTemplate.addEventListener("click", () => {
+  const blob = new Blob([DEFAULT_FILE], { type: "text/markdown" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "scheming-eunuch.md";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+
+function characterKey() { return character.name + "\n" + character.prompt; }
+
+// ---------- Setup ----------
+els.start.addEventListener("click", async () => {
+  const key = els.key.value.trim();
+  const chosen = els.model.value === "__custom__" ? els.custom.value.trim() : els.model.value;
+  if (!key) return showWarn("A key is required, my grace. Even loyalty has its price.");
+  if (!chosen) return showWarn("Please choose a model, or enter a model ID.");
+  showWarn("");
+
+  apiKey = key;
+  modelId = chosen;
+  if (els.remember.checked) store.set("eunuch.key", key); else store.del("eunuch.key");
+  store.set("eunuch.model", chosen);
+
+  updateLabel();
+  // A new character means a new conversation.
+  if (!chatStarted || chatCharacterKey !== characterKey()) startChat(); else showChat();
+});
+
+els.back.addEventListener("click", showChat);
+els.settings.addEventListener("click", () => {
+  els.chat.style.display = "none";
+  els.setup.style.display = "block";
+  els.start.textContent = "Save & return";
+  els.back.style.display = "inline-block";
+});
+
+function updateLabel() {
+  const opt = [...els.model.options].find((o) => o.value === modelId);
+  els.modelLabel.textContent = "Mind: " + (opt ? opt.textContent : modelId);
+}
+
+function showChat() {
+  els.setup.style.display = "none";
+  els.chat.style.display = "flex";
+  els.input.focus();
+}
+
+// ---------- Chat ----------
+const OPENING_CUE = "(The conversation is just beginning. Make your entrance and greet me in character, then invite me to speak.)";
+
+function startChat() {
+  if (controller) controller.abort();
+  chatStarted = true;
+  chatCharacterKey = characterKey();
+  els.log.innerHTML = "";
+  showChat();
+  if (!character.custom) {
+    history = [{ role: "assistant", content: OPENING }];
+    addMessage("eunuch", OPENING);
+  } else {
+    // Custom characters write their own entrance. The cue isn't shown to the user.
+    history = [{ role: "user", content: OPENING_CUE, hidden: true }];
+    respond();
+  }
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function format(text) {
+  return escapeHtml(text)
+    .replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
+}
+// Some reasoning models emit <think> blocks inline; hide them.
+function clean(text) {
+  return text.replace(/<think>[\s\S]*?(<\/think>|$)/g, "").replace(/^\s+/, "");
+}
+
+function addMessage(kind, text) {
+  const wrap = document.createElement("div");
+  wrap.className = "msg " + kind;
+  const who = document.createElement("div");
+  who.className = "who";
+  who.textContent = kind === "user" ? "You" : kind === "system" ? "A note from the scribe" : character.name;
+  const body = document.createElement("div");
+  body.className = "body";
+  body.innerHTML = format(text);
+  wrap.append(who, body);
+  els.log.appendChild(wrap);
+  els.log.scrollTop = els.log.scrollHeight;
+  return body;
+}
+
+function setGenerating(on) {
+  generating = on;
+  els.send.disabled = on;
+  els.stop.disabled = !on;
+}
+
+function explainError(status, message) {
+  if (status === 401) return "OpenRouter rejected the API key. Check it in Settings.";
+  if (status === 402) return "Your OpenRouter account is out of credits for this model. Add credits, or switch to a free model in Settings.";
+  if (status === 429) return "Rate limited. Free models have tight limits; wait a minute or switch models in Settings.";
+  if (status === 404) return "That model wasn't found or isn't available right now. Pick another in Settings.";
+  return (status ? "Error " + status + ": " : "") + (message || "Something went wrong.");
+}
+
+// Streams a reply to the current history. Returns { reply, failed }.
+async function respond() {
+  const startedFor = chatCharacterKey;
+  const messages = [
+    { role: "system", content: character.prompt },
+    ...history.slice(-30).map(({ role, content }) => ({ role, content })),
+  ];
+  const body = addMessage("eunuch", "");
+  body.classList.add("typing");
+  setGenerating(true);
+  const myController = new AbortController();
+  controller = myController;
+  let reply = "";
+  let failed = null;
+
+  try {
+    const res = await fetch(API + "/chat/completions", {
+      method: "POST",
+      signal: myController.signal,
+      headers: {
+        "Authorization": "Bearer " + apiKey,
+        "Content-Type": "application/json",
+        "HTTP-Referer": location.origin && location.origin !== "null" ? location.origin : "https://localhost",
+        "X-Title": "The Scheming Eunuch",
+      },
+      body: JSON.stringify({ model: modelId, messages, stream: true, temperature: 0.9, top_p: 0.95, max_tokens: 600 }),
+    });
+
+    if (!res.ok) {
+      let msg = "";
+      try { msg = (await res.json())?.error?.message || ""; } catch {}
+      failed = explainError(res.status, msg);
+    } else {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      outer: while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        let nl;
+        while ((nl = buffer.indexOf("\n")) !== -1) {
+          const line = buffer.slice(0, nl).trim();
+          buffer = buffer.slice(nl + 1);
+          if (!line.startsWith("data:")) continue; // skips ": OPENROUTER PROCESSING" keep-alives
+          const data = line.slice(5).trim();
+          if (data === "[DONE]") break outer;
+          try {
+            const json = JSON.parse(data);
+            if (json.error) { failed = explainError(json.error.code, json.error.message); break outer; }
+            reply += json.choices?.[0]?.delta?.content || "";
+            body.innerHTML = format(clean(reply));
+            els.log.scrollTop = els.log.scrollHeight;
+          } catch { /* partial or non-JSON line */ }
+        }
+      }
+    }
+  } catch (err) {
+    if (err.name !== "AbortError") failed = explainError(0, err.message);
+  }
+
+  if (controller === myController) { controller = null; setGenerating(false); }
+  // The chat was reset while this was streaming; discard.
+  if (startedFor !== chatCharacterKey || !body.isConnected) return { reply: "", failed: "reset" };
+
+  body.classList.remove("typing");
+  reply = clean(reply).trim();
+  if (failed && !reply) {
+    body.parentElement.remove();
+  } else {
+    if (!reply) reply = "*He opens his mouth, reconsiders, and merely bows.*";
+    body.innerHTML = format(reply);
+    history.push({ role: "assistant", content: reply });
+  }
+  if (failed) addMessage("system", failed);
+  return { reply, failed };
+}
+
+els.form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const text = els.input.value.trim();
+  if (!text || generating) return;
+  els.input.value = "";
+  autosize();
+  const userBody = addMessage("user", text);
+  history.push({ role: "user", content: text });
+
+  const { reply, failed } = await respond();
+  if (failed && failed !== "reset" && !reply) {
+    // Let them resend without duplicating.
+    userBody.parentElement.remove();
+    history.pop();
+    els.input.value = text;
+    autosize();
+  }
+  els.input.focus();
+});
+
+els.stop.addEventListener("click", () => { if (controller) controller.abort(); });
+els.reset.addEventListener("click", () => startChat());
+
+function autosize() {
+  els.input.style.height = "auto";
+  els.input.style.height = Math.min(els.input.scrollHeight, 160) + "px";
+}
+els.input.addEventListener("input", autosize);
+els.input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    els.form.requestSubmit();
+  }
+});
+
+// ---------- Init ----------
+const savedKey = store.get("eunuch.key");
+if (savedKey) els.key.value = savedKey;
+try {
+  const savedChar = JSON.parse(store.get("eunuch.character") || "null");
+  if (savedChar && savedChar.prompt) character = { name: savedChar.name, prompt: savedChar.prompt, custom: true };
+} catch {}
+applyCharacterUI();
+loadModels();
+</script>
+
+</body>
+</html>
